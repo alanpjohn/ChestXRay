@@ -1,5 +1,7 @@
 
 # Chest X-ray analysis for pneumonia detection
+ *@author - Alan John*
+
 to see dataset please click [here](https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia)
 
 This is going to be a simple binary classifier made using CNN
@@ -46,22 +48,8 @@ train
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
       <th></th>
       <th>id</th>
       <th>sick</th>
@@ -425,22 +413,6 @@ we'll be using tensorboard to monitor the training of the model
 %tensorboard --logdir key
 ```
 
-
-    Reusing TensorBoard on port 6006 (pid 7210), started 0:09:00 ago. (Use '!kill 7210' to kill it.)
-
-
-
-
-        <iframe
-            width="100%"
-            height="800"
-            src="http://localhost:6006"
-            frameborder="0"
-            allowfullscreen
-        ></iframe>
-        
-
-
 ### The model
 
 * our first layer is 2D convolution layer that has 128 nodes and 2D convolution occurs on a kernel size of 2X2.it also defines the input layer which has a shape of 200 X 200 X 1
@@ -477,11 +449,6 @@ model.add(Dense(32, activation ='relu'))
 model.add(Dense(1,activation = "sigmoid"))
 ```
 
-    WARNING: Logging before flag parsing goes to stderr.
-    W0915 15:01:16.834077 140113418954560 deprecation.py:506] From /home/alan/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Call initializer instance with the dtype argument instead of passing it to the constructor
-
 
 The below command is to read previously trained models
 
@@ -494,14 +461,6 @@ model = model_from_json(model)
 model.load_weights('chestxray.h5')
 ```
 
-    W0915 15:01:17.055892 140113418954560 deprecation.py:506] From /home/alan/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:97: calling GlorotUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Call initializer instance with the dtype argument instead of passing it to the constructor
-    W0915 15:01:17.056918 140113418954560 deprecation.py:506] From /home/alan/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:97: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Call initializer instance with the dtype argument instead of passing it to the constructor
-
-
 here we compile the model and set the optimizer used to adjust the weights as well as the loss function <br>
 we can also set up more metrics to observer the learning process
 
@@ -509,11 +468,6 @@ we can also set up more metrics to observer the learning process
 ```python
 model.compile(optimizer = "adam" , loss = "binary_crossentropy" , metrics = ["accuracy"])
 ```
-
-    W0915 15:01:17.703348 140113418954560 deprecation.py:323] From /home/alan/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/nn_impl.py:180: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Use tf.where in 2.0, which has the same broadcast rule as np.where
-
 
 model.fit is the command that trains the model 
 * first paramater is the input and second is the expected output
@@ -542,7 +496,7 @@ print(score)
 ```python
 check = model.predict_classes(images_test)
 ```
-
+Function to predict class in test sample
 
 ```python
 def show_test(i):
@@ -565,7 +519,7 @@ predict_test(24)
 
 
     [1]
-    0
+    1
 
 
 ### f1 score
@@ -583,44 +537,11 @@ for i in range(0,624):
         fncount = fncount + 1
     if check[i] == 1 and res_test[i] == 0:
         fpcount = fpcount + 1
-print(tpcount)
-print(fpcount)
-print(fncount)
-```
 
-    366
-    21
-    24
-
-
-
-```python
 precision = tpcount / (tpcount+fpcount)
-precision
-```
-
-
-
-
-    0.9457364341085271
-
-
-
-
-```python
 recall = tpcount / (tpcount+fncount)
 recall
-```
 
-
-
-
-    0.9384615384615385
-
-
-
-
-```python
 f1 = 2 * (precision*recall)/(precision+recall)
 ```
 
