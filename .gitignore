@@ -1,0 +1,9 @@
+chest_xray/
+log/
+test/
+train/
+normal.csv
+normal_test.csv
+sick.csv
+sick_test.csv
+key/
